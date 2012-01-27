@@ -82,4 +82,9 @@
 #Leave those in
 "%==%"<-function(a,b) a[(a%in%b)]
 
+#Index with function results
+"%[by]%"<-function(a,b) a[b(a)]
+"%[,by]%"<-function(a,b) a[,b(a)]
+"%[by,]%"<-function(a,b) a[b(a),]
+
 
