@@ -24,6 +24,10 @@
 #Set dim
 "%sd%"<-function(a,b){dim(a)<-b;a}
 
+#Attr 
+"%a%"<-attr
+"%a%<-"<-`attr<-`
+
 #Sprintf
 "%f%"<-function(a,b) do.call(sprintf,c(list(a),as.list(b)))
 
