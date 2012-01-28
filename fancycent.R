@@ -38,15 +38,17 @@
 #Sapply
 "%@@%"<-function(a,b) sapply(a,b)
 #Map and ignore
-"%@i%"<-function(a,b){for(e in a) b(e); return(invisible(NULL))}
+"%@i%"<-function(a,b){for(e in a) b(e);invisible(NULL)}
 #Curry
 "%|%"<-function(a,b) function(...) do.call(a,c(list(...),as.list(b)))
 "%|<%"<-function(a,b) function(...) do.call(a,c(as.list(b),list(...)))
 
 #Exclude by names
 "%x%"<-function(a,b) a[!(names(a)%in%b)]
+"%x%<-"<-function(a,b,value){value->a[!(names(a)%in%b)];a}
 #Restrict to names
 "%r%"<-function(a,b) a[(names(a)%in%b)]
+"%r%<-"<-function(a,b,value){value->a[(names(a)%in%b)];a}
 
 #Head
 "%h%"<-function(a,b) head(a,b)
@@ -54,8 +56,9 @@
 "%t%"<-function(a,b) tail(a,b)
 
 #Sample
-"%s%"<-function(a,b) if(is.null(b)) sample(a) else sample(a,b)
-"%S%"<-function(a,b) if(is.null(b)) sample(a,replace=TRUE) else sample(a,b,replace=TRUE)
+"%s%"<-function(a,b){if(length(a)==1) a<-c(a,a); if(is.null(b)) sample(a) else sample(a,b)}
+"%s%<-"<-function(a,b,value){value->a[sample.int(length(a),b)];a}
+"%S%"<-function(a,b){if(length(a)==1) a<-c(a,a); if(is.null(b)) sample(a,replace=TRUE) else sample(a,b,replace=TRUE)}
 
 #Max
 "%max%"<-function(a,b) sort(a)[b]
@@ -69,18 +72,23 @@
 
 #Exclude by names via regexp
 "%x~%"<-function(a,b) a[!grepl(paste(b,collapse="|"),names(a))]
+"%x~%<-"<-function(a,b,value){value->a[!grepl(paste(b,collapse="|"),names(a))];a}
 #Restrict to names via regexp
 "%r~%"<-function(a,b) a[grepl(paste(b,collapse="|"),names(a))]
+"%r~%<-"<-function(a,b,value){value->a[grepl(paste(b,collapse="|"),names(a))];a}
 
 #Grep
-"%~%"<-function(a,b) grep(paste(b,collapse="|"),a)
+"%~n%"<-function(a,b) grep(paste(b,collapse="|"),a)
 "%~?%"<-function(a,b) grepl(paste(b,collapse="|"),a)
-"%~v%"<-function(a,b) grep(paste(b,collapse="|"),a,value=TRUE)
+"%~%"<-function(a,b) grep(paste(b,collapse="|"),a,value=TRUE)
+"%~%<-"<-function(a,b,value){value->a[grepl(paste(b,collapse="|"),a)];a}
 
-#Remove those in
+#Leave those not in
 "%!=%"<-function(a,b) a[!(a%in%b)]
+"%!=%<-"<-function(a,b,value){value->a[!(a%in%b)];a}
 #Leave those in
 "%==%"<-function(a,b) a[(a%in%b)]
+"%==%<-"<-function(a,b,value){value->a[(a%in%b)];a}
 
 #Index with function results
 "%[by]%"<-function(a,b) a[b(a)]
