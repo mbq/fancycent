@@ -24,7 +24,7 @@
 #Set dim
 "%sd%"<-function(a,b){dim(a)<-b;a}
 
-#Attr 
+#Attr
 "%a%"<-attr
 "%a%<-"<-`attr<-`
 
@@ -65,7 +65,7 @@
 #Min
 "%min%"<-function(a,b) sort(a,decreasing=TRUE)[b]
 
-#Order by 
+#Order by
 "%by%"<-function(a,b) if(is.list(b)) a[do.call(order,b)] else a[order(b)]
 #Reverse order by
 "%rBy%"<-function(a,b) if(is.list(b)) a[do.call(order,c(b,list(decreasing=TRUE)))] else a[order(b,decreasing=TRUE)]
@@ -94,5 +94,25 @@
 "%[by]%"<-function(a,b) a[b(a)]
 "%[,by]%"<-function(a,b) a[,b(a)]
 "%[by,]%"<-function(a,b) a[b(a),]
+
+#Better sampling
+saneple<-function(x,size,replace=FALSE,prob=NULL){
+ if(missing(size))
+  size<-length(x);
+ x[sample.int(length(x),size,replace,prob)]
+}
+
+"%samp%"<-function(x,size)
+ sapply(size,function(s)
+  x[sample.int(length(x),size=s,replace=FALSE)])
+
+
+"%sampr%"<-function(x,size)
+ sapply(size,function(s)
+  x[sample.int(length(x),size=s,replace=TRUE)])
+
+"%r%"<-function(x,times)
+ rep(x,times)
+
 
 
